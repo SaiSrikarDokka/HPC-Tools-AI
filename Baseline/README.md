@@ -1,132 +1,118 @@
 # BERT Baseline for SQuAD Question Answering
 
-This project contains a Hugging Face Transformers baseline for fine-tuning BERT on the Stanford Question Answering Dataset (SQuAD). The training job is executed on a single-GPU SLURM node and saves model checkpoints and evaluation metrics in the `output/` directory.
+This project fine-tunes a pretrained BERT model on the Stanford Question Answering Dataset (SQuAD) using Hugging Face Transformers. The baseline is intended as a reproducible reference workflow for extractive QA and is executed on a single-GPU SLURM node.
 
 ## Objective
 
-The goal of this baseline is to adapt a pretrained BERT model for extractive question answering on SQuAD and evaluate its performance using standard QA metrics.
+The goal is to adapt `google-bert/bert-base-uncased` to SQuAD-v1.1 and evaluate its answer extraction quality using standard QA metrics, namely exact match and F1 score.
 
 ## Model and dataset
 
 - Base model: `google-bert/bert-base-uncased`
 - Dataset: `rajpurkar/squad`
-- Task: Question answering / span extraction
-- Framework: Hugging Face Transformers + PyTorch
+- Task: question answering / extractive span prediction
+- Framework: PyTorch + Hugging Face Transformers
 
-## Project structu  re
+## Project structure
 
 ```text
-HPC_Tools/Baseline/
+Baseline/
 ├── baseline.slurm          # SLURM job script for GPU execution
-├── run_baseline.sh         # Training command wrapper
-├── run_qa.py               # HF question-answering training script
-├── trainer_qa.py           # Custom trainer for QA evaluation
-├── utils_qa.py             # Postprocessing utilities
+├── baseline_*.err          # Slurm error logs
+├── baseline_*.out          # Slurm standard output logs
+├── run_baseline.sh         # Training wrapper script
+├── run_qa.py               # Hugging Face QA training script
+├── trainer_qa.py           # Custom QA trainer logic
+├── utils_qa.py             # Postprocessing utilities for answer extraction
 ├── requirements.txt        # Python dependencies
-├── output/                 # Model checkpoints, metrics, and logs
-├── baseline_*.err          # SLURM stderr logs
-├── baseline_*.out          # SLURM stdout logs
-└── README.md               # Project documentation
+├── README.md               # Project documentation
+├── output/                 # Local generated artifacts (large files kept local only)
+└── __pycache__/            # Local cache files
 ```
 
 ## Training configuration
 
-The baseline uses the following settings:
+The current baseline run uses:
 
-- Model: `google-bert/bert-base-uncased`
-- Dataset: `rajpurkar/squad`
-- Training epochs: `2`
-- Train batch size: `16`
-- Eval batch size: `16`
-- Learning rate: `3e-5`
-- Max sequence length: `384`
-- Document stride: `128`
-- Output directory: `./output`
-- Logging interval: every `100` steps
-- Save strategy: every epoch
-- Evaluation strategy: every epoch
+- model: `google-bert/bert-base-uncased`
+- dataset: `rajpurkar/squad`
+- epochs: `2`
+- train batch size: `16`
+- eval batch size: `16`
+- learning rate: `3e-5`
+- max sequence length: `384`
+- doc stride: `128`
+- output directory: `./output`
+- logging each 100 steps
+- save strategy: `epoch`
+- evaluation strategy: `epoch`
 
-## Running the baseline
+## Run commands
 
-### 1. Install dependencies
+### Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Submit the SLURM job
-
-```bash
-sbatch baseline.slurm
-```
-
-### 3. Or run locally
+### Local run
 
 ```bash
 bash run_baseline.sh
 ```
 
-The script executes:
+### SLURM job
 
 ```bash
-python run_qa.py \
-  --model_name_or_path "google-bert/bert-base-uncased" \
-  --dataset_name "rajpurkar/squad" \
-  --do_train \
-  --do_eval \
-  --per_device_train_batch_size 16 \
-  --per_device_eval_batch_size 16 \
-  --learning_rate 3e-5 \
-  --num_train_epochs 2 \
-  --max_seq_length 384 \
-  --doc_stride 128 \
-  --output_dir "./output" \
-  --logging_steps 100 \
-  --save_strategy epoch \
-  --eval_strategy epoch
+sbatch baseline.slurm
+```
+
+## Current measured results
+
+The latest rerun produced the following validation metrics:
+
+- Exact match: `81.02`
+- F1 score: `88.40`
+- Training loss: `0.9955`
+- Training samples: `88,492`
+- Validation samples: `10,753`
+- Training runtime: `48.33` minutes
+
+The aggregate metrics file `output/all_results.json` contains:
+
+```json
+{
+    "epoch": 2.0,
+    "eval_exact_match": 81.02175969725639,
+    "eval_f1": 88.39871553578057,
+    "eval_runtime": 55.535,
+    "eval_samples": 10753,
+    "train_loss": 0.9955241624538689,
+    "train_runtime": 2899.824,
+    "train_samples": 88492,
+    "training_time_minutes": 48.332531325798485
+}
 ```
 
 ## Output artifacts
 
-The results are written under `output/` and include:
+The generated local output directory contains:
 
-- `all_results.json` — summary of final training and evaluation metrics
-- `eval_results.json` — evaluation metrics from the final validation pass
-- `train_results.json` — training summary statistics
-- `eval_predictions.json` — model predictions on evaluation data
-- `eval_nbest_predictions.json` — top candidate answers per question
+- `all_results.json` — final aggregate training + evaluation statistics
+- `eval_results.json` — final validation metrics
+- `train_results.json` — training summary record
+- `eval_predictions.json` — model predictions on validation data
+- `eval_nbest_predictions.json` — top answer candidates for each question
 - `checkpoint-*` — saved model checkpoints for each epoch
-- `config.json`, `tokenizer.json`, `tokenizer_config.json` — model/tokenizer metadata
+- `model.safetensors` — the trained model weights
+- `optimizer.pt` — optimizer state files for checkpoint recovery
+- `config.json`, `tokenizer.json`, `tokenizer_config.json` — metadata for model loading
 
-## Measured results
+## Important note about Git
 
-The completed run produced the following evaluation metrics:
+The generated `output/` folder is large because it contains trained model weights and optimizer state. These files are intentionally kept local and excluded from Git to avoid pushing large binary artifacts to GitHub.
 
-- Exact match: `80.87`
-- F1 score: `88.33`
-- Training loss: `0.9934`
-- Training samples: `88,492`
-- Training runtime: about `48.36` minutes
-- Validation samples: `10,753`
-
-The aggregate result file `output/all_results.json` contains:
-
-```json
-{
-  "epoch": 2.0,
-  "eval_exact_match": 80.87038789025544,
-  "eval_f1": 88.33304725923448,
-  "train_loss": 0.9933756519842484,
-  "training_time_minutes": 48.35991259686804
-}
-```
-
-## Notes
-
-- The job was configured for a single GPU with `--gres=gpu:1`.
-- It uses a standard BERT-base uncased checkpoint and fine-tunes it on SQuAD without additional architecture changes.
-- This is intended as a baseline model: it provides a simple, reproducible training setup that can be used as a benchmark for later experiments.
-- The generated log files (`baseline_*.err` and `baseline_*.out`) capture the training run, environment information, and final result summary.
+The small JSON summary files (`all_results.json`, `eval_results.json`, `train_results.json`) are the lightweight records that are useful to keep in version control.
 
 ## References
 
