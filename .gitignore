@@ -2,5 +2,8 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-Baseline/output/
 *.safetensors
+*.pt
+*.bin
+Baseline/output/checkpoint-*/
+Baseline/output/model.safetensors
