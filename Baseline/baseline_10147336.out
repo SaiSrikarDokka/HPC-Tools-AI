@@ -1,0 +1,44 @@
+slurmstepd: info: Setting TMPDIR to /scratch/10147336. Previous errors about TMPDIR can be discarded
+======================================
+BERT BASELINE - SQuAD
+======================================
+Job ID: 10147336
+Node: a100-57
+Date: Wed Sep 30 05:35:47 PM CEST 2026
+
+GPU information:
+Wed Sep 30 17:35:47 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.86.15              Driver Version: 570.86.15      CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A100-PCIE-40GB          On  |   00000000:17:00.0 Off |                    0 |
+| N/A   33C    P0             35W /  250W |       1MiB /  40960MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+Python:
+Python 3.7.8
+
+PyTorch / CUDA:
+
+======================================
+Starting BERT + SQuAD training
+======================================
+
+======================================
+JOB FINISHED
+======================================
+Wall-clock job execution time: 0 seconds
+End time: Wed Sep 30 05:35:47 PM CEST 2026
