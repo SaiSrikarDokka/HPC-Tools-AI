@@ -1,11 +1,5 @@
 # BERT Baseline for SQuAD Question Answering
 
-This project fine-tunes a pretrained BERT model on the Stanford Question Answering Dataset (SQuAD) using Hugging Face Transformers. The baseline is intended as a reproducible reference workflow for extractive QA and is executed on a single-GPU SLURM node.
-
-## Objective
-
-The goal is to adapt `google-bert/bert-base-uncased` to SQuAD-v1.1 and evaluate its answer extraction quality using standard QA metrics, namely exact match and F1 score.
-
 ## Model and dataset
 
 - Base model: `google-bert/bert-base-uncased`
