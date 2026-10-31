@@ -3,7 +3,7 @@ set -e
 
 MODEL="google-bert/bert-base-uncased"
 DATASET="rajpurkar/squad"
-OUTPUT_DIR="./output"
+OUTPUT_DIR="./output_baseline_retry"
 
 python run_qa.py \
     --model_name_or_path "$MODEL" \

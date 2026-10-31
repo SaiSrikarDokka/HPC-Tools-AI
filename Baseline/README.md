@@ -26,13 +26,13 @@ Baseline/
 ├── utils_qa.py             # Postprocessing utilities for answer extraction
 ├── requirements.txt        # Python dependencies
 ├── README.md               # Project documentation
-├── output/                 # Local generated artifacts (large files kept local only)
+├── output_baseline_retry/  # Artifacts from the latest baseline run (kept local)
 └── __pycache__/            # Local cache files
 ```
 
 ## Training configuration
 
-The current baseline run uses:
+The latest run (SLURM job `11143433`) used the configuration in `run_baseline.sh`:
 
 - model: `google-bert/bert-base-uncased`
 - dataset: `rajpurkar/squad`
@@ -42,10 +42,13 @@ The current baseline run uses:
 - learning rate: `3e-5`
 - max sequence length: `384`
 - doc stride: `128`
-- output directory: `./output`
+- random seed: `42`
+- output directory: `./output_baseline_retry`
 - logging each 100 steps
 - save strategy: `epoch`
 - evaluation strategy: `epoch`
+
+The run used one NVIDIA A100 GPU and completed both training epochs and the final evaluation.
 
 ## Run commands
 
@@ -67,40 +70,50 @@ bash run_baseline.sh
 sbatch baseline.slurm
 ```
 
-## Current measured results
+## Latest measured results
 
-The latest rerun produced the following validation metrics:
+The final evaluation from `baseline_11143433.out` produced:
 
-- Exact match: `81.02`
-- F1 score: `88.40`
-- Training loss: `0.9955`
+- Exact match: `80.7569`
+- F1 score: `88.142`
+- Training loss: `1.0005`
 - Training samples: `88,492`
 - Validation samples: `10,753`
-- Training runtime: `48.33` minutes
+- Training runtime: `2,883.10` seconds (`48.05` minutes)
+- Final evaluation runtime: `55.31` seconds
+- SLURM job wall-clock time: `2,975` seconds (`49` minutes, `35` seconds)
 
-The aggregate metrics file `output/all_results.json` contains:
+The latest run's `all_results.json` contains the combined training and evaluation results:
 
 ```json
 {
     "epoch": 2.0,
-    "eval_exact_match": 81.02175969725639,
-    "eval_f1": 88.39871553578057,
-    "eval_runtime": 55.535,
+    "eval_exact_match": 80.75685903500474,
+    "eval_f1": 88.14200496107321,
+    "eval_runtime": 55.3198,
     "eval_samples": 10753,
-    "train_loss": 0.9955241624538689,
-    "train_runtime": 2899.824,
+    "eval_samples_per_second": 194.379,
+    "eval_steps_per_second": 12.166,
+    "total_flos": 3.468400889562317e+16,
+    "train_loss": 1.0005138913107876,
+    "train_runtime": 2883.1003,
     "train_samples": 88492,
-    "training_time_minutes": 48.332531325798485
+    "train_samples_per_second": 61.387,
+    "train_steps_per_second": 3.837,
+    "training_time_minutes": 48.05385364205576,
+    "training_time_seconds": 2883.231218523346
 }
 ```
 
+The separate `eval_results.json` and `train_results.json` files contain the corresponding evaluation and training metrics.
+
 ## Output artifacts
 
-The generated local output directory contains:
+The latest run's `output_baseline_retry/` directory contains:
 
-- `all_results.json` — final aggregate training + evaluation statistics
 - `eval_results.json` — final validation metrics
 - `train_results.json` — training summary record
+- `all_results.json` — combined final training and evaluation metrics
 - `eval_predictions.json` — model predictions on validation data
 - `eval_nbest_predictions.json` — top answer candidates for each question
 - `checkpoint-*` — saved model checkpoints for each epoch
@@ -110,9 +123,9 @@ The generated local output directory contains:
 
 ## Important note about Git
 
-The generated `output/` folder is large because it contains trained model weights and optimizer state. These files are intentionally kept local and excluded from Git to avoid pushing large binary artifacts to GitHub.
+The generated `output_baseline_retry/` folder is large because it contains trained model weights and optimizer state. These files are intentionally kept local and excluded from Git to avoid pushing large binary artifacts to GitHub.
 
-The small JSON summary files (`all_results.json`, `eval_results.json`, `train_results.json`) are the lightweight records that are useful to keep in version control.
+The small JSON summary files (`eval_results.json` and `train_results.json`) are lightweight records that are useful to keep in version control.
 
 ## References
 
