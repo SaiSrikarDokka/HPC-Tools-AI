@@ -13,7 +13,7 @@ Each directory contains its own run scripts and detailed README with configurati
 
 ## Results comparison
 
-Results below are from the completed baseline SLURM job `11143433` and distributed SLURM job `11142338`. Both runs trained for two epochs with an effective global training batch size of 16.
+Results below are from the baseline and distributed. Both runs trained for two epochs with an effective global training batch size of 16.
 
 | Metric | Baseline: 1 node, 1 GPU | Distributed: 2 nodes, 4 GPUs |
 |---|---:|---:|
@@ -24,4 +24,3 @@ Results below are from the completed baseline SLURM job `11143433` and distribut
 
 The distributed run achieved about **2.41x training speedup**, reducing training runtime by **58.6%** compared with the single-GPU baseline. Validation quality was comparable: distributed exact match was lower by about 0.11 points, while F1 was higher by about 0.07 points. These are measurements from individual runs; small metric differences can occur from training variability.
 
-Runtime is the Hugging Face Trainer training-phase runtime, not total SLURM job elapsed time.
