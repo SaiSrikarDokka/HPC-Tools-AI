@@ -1,10 +1,12 @@
 # BERT Baseline for SQuAD Question Answering
 
-This project fine-tunes a pretrained BERT model on the Stanford Question Answering Dataset (SQuAD) using Hugging Face Transformers. The baseline is intended as a reproducible reference workflow for extractive QA and is executed on a single-GPU SLURM node.
+## 1. Overview
 
-## Objective
+This folder contains the BASELINE implementation for the HPC Tool AI Lab.
 
-The goal is to adapt `google-bert/bert-base-uncased` to SQuAD-v1.1 and evaluate its answer extraction quality using standard QA metrics, namely exact match and F1 score.
+The objective is to implement the BERT-Base model on the SQuAD question-answering dataset using PyTorch and a single NVIDIA A100 GPU and measure the time.
+
+The implementation is based on the Hugging Face PyTorch question-answering example.
 
 ## Model and dataset
 
@@ -29,6 +31,27 @@ Baseline/
 ├── output_baseline_retry/  # Artifacts from the latest baseline run (kept local)
 └── __pycache__/            # Local cache files
 ```
+
+### `run_qa.py`
+
+Main Python script used for the BASELINE implementation.
+
+The script is based on the Hugging Face PyTorch question-answering implementation
+`examples/pytorch/question-answering/run_qa.py`.
+
+It is responsible for:
+
+- Loading the `google-bert/bert-base-uncased` model.
+- Loading the `rajpurkar/squad` dataset.
+- Tokenizing and preprocessing the question-answering data.
+- Fine-tuning BERT on the SQuAD training set.
+- Evaluating the model on the SQuAD validation set.
+- Saving the trained model, checkpoints, and training metrics.
+- Measuring and reporting the training execution time.
+
+The original Hugging Face implementation was adapted for this assignment to include
+the required single-GPU training configuration and explicit training-time measurement.
+
 
 ## Training configuration
 
