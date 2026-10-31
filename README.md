@@ -6,8 +6,8 @@ Both experiments use `google-bert/bert-base-uncased`, the `rajpurkar/squad` data
 
 ## Repository layout
 
-- [`Baseline/`](./Baseline/) — single-GPU training and evaluation, using one NVIDIA A100.
-- [`distributed/`](./distributed/) — DistributedDataParallel training and evaluation, using two nodes with two NVIDIA A100 GPUs per node (four GPUs total).
+- [`BASELINE/`](./BASELINE/) — single-GPU training and evaluation, using one NVIDIA A100.
+- [`DISTRIBUTED/`](./DISTRIBUTED/) — DistributedDataParallel training and evaluation, using two nodes with two NVIDIA A100 GPUs per node (four GPUs total).
 
 Each directory contains its own run scripts and detailed README with configuration and run instructions.
 
