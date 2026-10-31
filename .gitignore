@@ -5,5 +5,7 @@ __pycache__/
 *.safetensors
 *.pt
 *.bin
-Baseline/output/checkpoint-*/
-Baseline/output/model.safetensors
+BASELINE/output_baseline/checkpoint-*/
+BASELINE/output_baseline/model.safetensors
+DISTRIBUTED/output_ddp/checkpoint-*/
+DISTRIBUTED/output_ddp/model.safetensors

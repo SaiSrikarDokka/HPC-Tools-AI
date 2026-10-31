@@ -1,0 +1,34 @@
+slurmstepd: info: Setting TMPDIR to /scratch/11089770. Previous errors about TMPDIR can be discarded
+======================================
+BERT BASELINE - SQuAD
+======================================
+Job ID: 11089770
+Node: a100-20
+Date: Thu Oct 29 02:53:28 PM CET 2026
+
+GPU information:
+Thu Oct 29 14:53:29 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.178.04             Driver Version: 580.178.04     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A100-PCIE-40GB          On  |   00000000:17:00.0 Off |                    0 |
+| N/A   40C    P0             64W /  250W |       0MiB /  40960MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+
+Python:
+Python 3.7.8
+
+PyTorch / CUDA:

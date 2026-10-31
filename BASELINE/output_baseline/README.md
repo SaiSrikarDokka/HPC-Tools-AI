@@ -7,14 +7,14 @@ tags:
 datasets:
 - rajpurkar/squad
 model-index:
-- name: output
+- name: output_baseline_retry
   results: []
 ---
 
 <!-- This model card has been generated automatically according to the information the Trainer had access to. You
 should probably proofread and complete it, then remove this comment. -->
 
-# output
+# output_baseline_retry
 
 This model is a fine-tuned version of [google-bert/bert-base-uncased](https://huggingface.co/google-bert/bert-base-uncased) on the rajpurkar/squad dataset.
 
